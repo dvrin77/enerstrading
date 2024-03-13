@@ -1,1 +1,29 @@
 
+name: Compilar para macOS
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Instalar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - name: Instalar PyInstaller
+      run: pip install pyinstaller
+    - name: Compilar script
+      run: pyinstaller --onefile --windowed codigo.py
+    - name: Subir artefacto
+      uses: actions/upload-artifact@v3
+      with:
+        name: script-compilado
+        path: dist/codigo
